@@ -1,0 +1,17 @@
+{
+  "name": "discord-rp-events-bot",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Discord RP Events Bot (Schmuggel, Einbruch, Raub, Kutschenüberfall) mit zeitgestaffelten Nachrichten.",
+  "main": "index.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.15.3",
+    "express": "^4.19.2"
+  }
+}

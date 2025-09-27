@@ -1,3 +1,5 @@
+// index.js
+import "dotenv/config";
 import express from "express";
 import { Client, GatewayIntentBits, REST, Routes } from "discord.js";
 import { scenarios, weightedPick } from "./scenarios.js";
@@ -26,7 +28,7 @@ app.listen(PORT, () => console.log(`[health] Listening on :${PORT}`));
 // Discord Client
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
-// Slash-Commands registrieren
+// Slash-Commands
 const slashCommands = Object.values(scenarios).map(s => ({
   name: s.command,
   description: `${s.label} starten (zeitgestaffelte RP-Ereignisse)`
@@ -53,7 +55,8 @@ function formatText(guild, userId, raw) {
   return text;
 }
 
-// Szenario starten
+const MIN = 60 * 1000;
+
 async function runScenario(interaction, scenarioKey) {
   const guild = interaction.guild;
   const channel = interaction.channel;
@@ -61,42 +64,43 @@ async function runScenario(interaction, scenarioKey) {
 
   const cfg = scenarios[scenarioKey];
   if (!cfg) {
-    return interaction.reply({ content: "❌ Unbekanntes Szenario.", ephemeral: true });
+    return interaction.reply({ content: "Unbekanntes Szenario.", ephemeral: true });
   }
 
-  // Startmeldung sofort
+  // Startmeldung
   await interaction.reply(formatText(guild, userId, cfg.start));
 
-  // Alle Phasen zeitgesteuert senden
-  cfg.phases.forEach(phase => {
-    setTimeout(() => {
-      const pick = weightedPick(cfg[phase.key]);
-      channel.send(formatText(guild, userId, pick));
-    }, phase.delay * 60 * 1000);
-  });
+  // Ereignis nach 4 Minuten
+  setTimeout(() => {
+    const pick = weightedPick(cfg.first);
+    channel.send(formatText(guild, userId, pick));
+  }, 4 * MIN);
 
-  // Finale Nachricht
+  // Ereignis nach 7 Minuten
+  setTimeout(() => {
+    const pick = weightedPick(cfg.second);
+    channel.send(formatText(guild, userId, pick));
+  }, 7 * MIN);
+
+  // Abschluss nach 10 Minuten
   setTimeout(() => {
     const pick = weightedPick(cfg.final);
-    channel.send(
-      `⚔️ Aktivität vom Typ **${cfg.label}** wurde beendet.\n${formatText(guild, userId, pick)}`
-    );
-  }, cfg.finalDelay * 60 * 1000);
+    channel.send(`Aktivität vom Typ **${cfg.label}** wurde beendet.\n${formatText(guild, userId, pick)}`);
+  }, 10 * MIN);
 }
 
 client.on("ready", () => {
-  console.log(`[ready] Logged in als ${client.user.tag}`);
+  console.log(`[ready] Logged in as ${client.user.tag}`);
 });
 
 client.on("interactionCreate", async (interaction) => {
   if (!interaction.isChatInputCommand?.()) return;
 
   const cmd = interaction.commandName;
-  const entry = Object.entries(scenarios).find(([, s]) => s.command === cmd);
+  const entry = Object.values(scenarios).find(s => s.command === cmd);
   if (!entry) return;
 
-  const [key] = entry;
-  await runScenario(interaction, key);
+  await runScenario(interaction, Object.keys(scenarios).find(k => scenarios[k].command === cmd));
 });
 
 // Start

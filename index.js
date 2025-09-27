@@ -1,14 +1,13 @@
-// index.js
-import "dotenv/config";
 import express from "express";
 import { Client, GatewayIntentBits, REST, Routes } from "discord.js";
 import { scenarios, weightedPick } from "./scenarios.js";
+import fs from "fs";
 
 const {
   DISCORD_TOKEN,
   CLIENT_ID,
   GUILD_ID,
-  PORT = 3000,
+  PORT = 10002,
   ROLE_LAW_NAME = "Law"
 } = process.env;
 
@@ -55,6 +54,12 @@ function formatText(guild, userId, raw) {
   return text;
 }
 
+// Logging-Funktion
+function logEvent(message) {
+  const line = `[${new Date().toISOString()}] ${message}\n`;
+  fs.appendFileSync("gambit.log", line);
+}
+
 const MIN = 60 * 1000;
 
 async function runScenario(interaction, scenarioKey) {
@@ -68,28 +73,36 @@ async function runScenario(interaction, scenarioKey) {
   }
 
   // Startmeldung
-  await interaction.reply(formatText(guild, userId, cfg.start));
+  const startMsg = formatText(guild, userId, cfg.start);
+  await interaction.reply(startMsg);
+  logEvent(`START: ${cfg.label} von ${interaction.user.tag} in #${channel.name} → ${startMsg}`);
 
   // Ereignis nach 4 Minuten
   setTimeout(() => {
     const pick = weightedPick(cfg.first);
-    channel.send(formatText(guild, userId, pick));
+    const msg = formatText(guild, userId, pick);
+    channel.send(msg);
+    logEvent(`FIRST: ${cfg.label} für ${interaction.user.tag} → ${msg}`);
   }, 4 * MIN);
 
   // Ereignis nach 7 Minuten
   setTimeout(() => {
     const pick = weightedPick(cfg.second);
-    channel.send(formatText(guild, userId, pick));
+    const msg = formatText(guild, userId, pick);
+    channel.send(msg);
+    logEvent(`SECOND: ${cfg.label} für ${interaction.user.tag} → ${msg}`);
   }, 7 * MIN);
 
   // Abschluss nach 10 Minuten
   setTimeout(() => {
     const pick = weightedPick(cfg.final);
-    channel.send(`Aktivität vom Typ **${cfg.label}** wurde beendet.\n${formatText(guild, userId, pick)}`);
+    const msg = `Aktivität vom Typ **${cfg.label}** wurde beendet.\n${formatText(guild, userId, pick)}`;
+    channel.send(msg);
+    logEvent(`FINAL: ${cfg.label} für ${interaction.user.tag} → ${msg}`);
   }, 10 * MIN);
 }
 
-client.on("clientReady", () => {
+client.on("ready", () => {
   console.log(`[ready] Logged in as ${client.user.tag}`);
 });
 

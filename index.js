@@ -89,7 +89,7 @@ async function runScenario(interaction, scenarioKey) {
   }, 10 * MIN);
 }
 
-client.on("ready", () => {
+client.on("clientReady", () => {
   console.log(`[ready] Logged in as ${client.user.tag}`);
 });
 

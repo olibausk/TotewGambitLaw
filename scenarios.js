@@ -120,5 +120,61 @@ export const scenarios = {
       { key: "second", delay: 7 }
     ],
     finalDelay: 10
+  },
+
+  // === Kidnapping (Slash: /kidnapping) ===
+  kidnapping: {
+    command: "kidnapping",
+    label: "Kidnapping",
+    start: `Der {user} plant eine Entführung (RP startklar – Opfer lokalisieren & Szene eröffnen)`,
+    first: [
+      { weight: 70, text: "Du schaffst es, das Opfer zu isolieren – niemand bemerkt euch." },
+      { weight: 20, text: "Ein Passant sieht etwas und flüstert es weiter – @Law könnte Wind bekommen." },
+      { weight: 10, text: "Das Opfer leistet Widerstand – Tumult zieht Blicke auf sich." }
+    ],
+    second: [
+      { weight: 50, text: "Fesseln sitzen, Knebel hält – der Transport beginnt ohne großen Lärm." },
+      { weight: 25, text: "Jemand erkennt das Pferd/Outfit und meldet es dem Law – Fahndung läuft an." },
+      { weight: 15, text: "Ein Komplize patzt – Spur (Seil/Stofffetzen) bleibt am Tatort zurück." },
+      { weight: 10, text: "Maske verrutscht – ein Zeuge kann dein Gesicht vage beschreiben." }
+    ],
+    final: [
+      { weight: 55, text: "Ihr erreicht das Versteck – Forderung kann gestellt werden. (Volle Kontrolle)" },
+      { weight: 30, text: "Stress auf der Route – Versteck wechseln, nur **50%** eurer Pläne umsetzbar." },
+      { weight: 15, text: "@Law kommt zu nah – ihr müsst das Opfer freilassen. **Kein Gewinn**." }
+    ],
+    phases: [
+      { key: "first", delay: 5 },
+      { key: "second", delay: 7 }
+    ],
+    finalDelay: 9
+  },
+
+  // === Mord (Slash: /mord) ===
+  mord: {
+    command: "mord",
+    label: "Mord",
+    start: `Der {user} bereitet einen Mordanschlag vor (Ort wählen, Alibi/Fluchtweg im RP klären)`,
+    first: [
+      { weight: 65, text: "Du findest einen günstigen Moment – kaum Zeugen in der Nähe." },
+      { weight: 20, text: "Ein Schatten bewegt sich – möglicherweise doch ein Zeuge in Hörweite." },
+      { weight: 15, text: "Unerwartete Störung – Ziel ändert die Routine, du musst improvisieren." }
+    ],
+    second: [
+      { weight: 45, text: "Die Tat läuft schnell und leise – Spuren minimal." },
+      { weight: 25, text: "Ein Schuss fällt/Schrei ertönt – Anwohner alarmieren @Law." },
+      { weight: 20, text: "Eine markante Spur bleibt: Schuhabdruck oder Pulverrückstände." },
+      { weight: 10, text: "Jemand erkennt deine Stimme/Körperhaltung – vage Täterbeschreibung." }
+    ],
+    final: [
+      { weight: 50, text: "Ziel ausgeschaltet & Flucht gelungen – vorerst **keine direkte Spur**." },
+      { weight: 35, text: "Du entkommst, aber **Gefahrenstufe steigt** – @Law setzt Priorität auf die Ermittlung." },
+      { weight: 15, text: "Tat vereitelt oder unterbrochen – **kein Erfolg**, erhöhte Aufmerksamkeit im Gebiet." }
+    ],
+    phases: [
+      { key: "first", delay: 4 },
+      { key: "second", delay: 6 }
+    ],
+    finalDelay: 10
   }
 };

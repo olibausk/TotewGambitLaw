@@ -171,10 +171,10 @@ export const scenarios = {
       { weight: 15, text: "@Law kommt zu nah – ihr müsst das Opfer freilassen. **Kein Gewinn**." }
     ],
     phases: [
-      { key: "first", delay: 5 },
-      { key: "second", delay: 7 }
+      { key: "first", delay: 2 },
+      { key: "second", delay: 4 }
     ],
-    finalDelay: 10
+    finalDelay: 5
   },
 
   // === Mord (Slash: /mord) ===

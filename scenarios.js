@@ -37,6 +37,33 @@ export const scenarios = {
     ],
     finalDelay: 10
   },
+// --- Seeschmuggel ---
+  seeschmuggel: {
+    command: "startseeschmuggel",
+    label: "Seeschmuggel",
+    start: `Der {user} begibt sich auf seine Schmuggelroute (Du darfst ab jetzt in Richtung deines Zielortes fahren)`,
+    first: [
+      { weight: 80, text: "Du kommst ungesehen durch bisher. Niemand wird gesondert alarmiert." },
+      { weight: 15, text: "Einem einsamen Fischer kommt es merkwürdig vor... Die @Law machen sich auf den Weg. (Du musst deine aktuelle Position und die Richtung in die du fährst mitteilen und darfst deine Fahrt fortsetzen sobald das Law deine Position gesehen hat)" },
+      { weight: 5, text: "Damn, du bist einer Patrouille der Küstenwache direkt in die Arme geraten, sie geleiten dich zum nächsten Festland und übergeben dich an @Law (Du muss deine aktuelle Position dem Law mitteilen.  Der Schmuggel ist hier beendet, du musst warten bis das Law bei dir ist und dann spielt ihr alles weitere IC aus, keinesfalls kannst du dein Ziel erreichen mit deiner Schmuggelware, das Risiko das du dein Versteck oder deinen Käufer damit verräts ist viel zu hoch.)" }
+    ],
+    second: [
+      { weight: 50, text: "Niemand hat dich gesehen und deine Spuren gehen unter." },
+      { weight: 20, text: "Jemand verrät deinen Zielort an das @Law. (Du musst dem Law deinen Zielort verraten, beispielsweise Annesburg, @Law darf diese Information aber nur zur Ermittlung nutzen und nicht für diesen Schmuggel)" },
+      { weight: 20, text: "Eine Ratte hat dem Law dein Versteck verraten.(Du musst dem Law dein Versteck verraten, beispielsweise Cumberland Forrest, @Law darf diese Information aber nur zur Ermittlung nutzen und nicht für diesen Schmuggel)" },
+      { weight: 10, text: "Deine Maske verrutscht. @Law erkennt dich. (Jetzt  kann die @Law dich auf dein Verbrechen ansprechen. Aber sie haben dich nicht auf frischer Tat ertappt." }
+    ],
+    final: [
+      { weight: 60, text: "Yes, das war ein erfolgreicher Tag. (Streiche den gesamten geplanten Gewinn für diese Schmuggeltour ein)" },
+      { weight: 30, text: "Schade, halbe Ware verloren – nur 50% Gewinn.(Von dem Gewinn der mit der Tour erzielt worden wäre, erhälst du lediglich die Hälfte)" },
+      { weight: 10, text: "Der Käufer hat dich betrogen. Kein Gewinn." }
+    ],
+    phases: [
+      { key: "first", delay: 4 },
+      { key: "second", delay: 7 }
+    ],
+    finalDelay: 10
+  },
 
   // --- Einbruch ---
   einbruch: {
